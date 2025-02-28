@@ -55,3 +55,9 @@ help: Makefile
 	@echo ''
 	@echo 'Targets:'
 	@sed -n 's/^#?//p' $< | column -t -s ':' |  sort | sed -e 's/^/ /'
+
+docker: Dockerfile
+	docker build -t geth .
+
+run-devnet: docker
+	docker run -d -p 127.0.0.1:8123:8545 geth geth --dev --http --http.addr 0.0.0.0 --http.api eth,web3,net,debug,admin,dev --http.corsdomain "*"
